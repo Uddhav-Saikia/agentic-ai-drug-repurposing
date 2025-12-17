@@ -48,7 +48,7 @@ services:
     environment:
       - DATABASE_URL=postgresql://postgres:postgres123@postgres:5432/drug_repurposing
       - REDIS_URL=redis://redis:6379/0
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
     ports:
       - "8000:8000"
     volumes:
@@ -72,7 +72,7 @@ services:
     environment:
       - DATABASE_URL=postgresql://postgres:postgres123@postgres:5432/drug_repurposing
       - REDIS_URL=redis://redis:6379/0
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
     volumes:
       - ./backend:/app
     depends_on:

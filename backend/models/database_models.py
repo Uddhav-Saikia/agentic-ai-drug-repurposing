@@ -10,7 +10,7 @@ from core.database import Base
 
 
 class Query(Base):
-    """User queries for drug repurposing analysis"""
+    """User queries for drug repurposing requirements"""
     __tablename__ = "queries"
     
     id = Column(Integer, primary_key=True, index=True)
@@ -53,7 +53,7 @@ class Report(Base):
     title = Column(String(500), nullable=True)
     content = Column(Text, nullable=True)
     summary = Column(Text, nullable=True)
-    metadata = Column(JSON, nullable=True)
+    report_metadata = Column("metadata", JSON, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
     
     # Relationships
@@ -87,6 +87,6 @@ class Embedding(Base):
     id = Column(Integer, primary_key=True, index=True)
     content = Column(Text, nullable=False)
     embedding = Column(Text, nullable=True)  # Stored as JSON array or pgvector type
-    metadata = Column(JSON, nullable=True)
+    embedding_metadata = Column("metadata", JSON, nullable=True)
     source = Column(String(255), nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)

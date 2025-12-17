@@ -47,7 +47,9 @@ app.add_middleware(
 
 # Include routers
 app.include_router(health.router, prefix=f"/{settings.API_VERSION}", tags=["Health"])
-app.include_router(queries.router, prefix=f"/{settings.API_VERSION}/queries", tags=["Queries"])
+app.include_router(queries.router, prefix=f"/{settings.API_VERSION}", tags=["Queries"])
+app.include_router(reports.router, prefix=f"/{settings.API_VERSION}", tags=["Reports"])
+app.include_router(agents.router, prefix=f"/{settings.API_VERSION}", tags=["Agents"])
 app.include_router(agents.router, prefix=f"/{settings.API_VERSION}/agents", tags=["Agents"])
 app.include_router(reports.router, prefix=f"/{settings.API_VERSION}/reports", tags=["Reports"])
 

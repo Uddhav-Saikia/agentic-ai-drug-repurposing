@@ -46,7 +46,7 @@ class BaseAgent(ABC):
         Args:
             name: Agent name/identifier
             description: Agent's role and capabilities
-            llm: Language model instance (OpenAI, etc.)
+            llm: Language model instance (Google Gemini, etc.)
         """
         self.name = name
         self.description = description

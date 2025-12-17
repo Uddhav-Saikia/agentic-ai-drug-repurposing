@@ -173,7 +173,7 @@ def check_dependencies():
     
     required = [
         "langchain",
-        "langchain_openai",
+        "langchain_google_genai",
         "requests",
         "beautifulsoup4",
         "pydantic"
@@ -191,11 +191,11 @@ def check_env_vars():
     """Check environment variables"""
     print("\nChecking environment variables...")
     
-    api_key = os.getenv("OPENAI_API_KEY")
+    api_key = os.getenv("GEMINI_API_KEY")
     if api_key and api_key != "":
-        print(f"✅ OPENAI_API_KEY is set ({api_key[:8]}...)")
+        print(f"✅ GEMINI_API_KEY is set ({api_key[:8]}...)")
     else:
-        print("⚠️  OPENAI_API_KEY not set - required for LLM features")
+        print("⚠️  GEMINI_API_KEY not set - required for LLM features")
         print("   Set it in your .env file or environment")
 
 

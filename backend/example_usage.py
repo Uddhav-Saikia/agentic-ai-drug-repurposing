@@ -228,9 +228,9 @@ async def main():
 
 
 if __name__ == "__main__":
-    # Check if OpenAI API key is set
-    if not os.getenv("OPENAI_API_KEY"):
-        print("ERROR: OPENAI_API_KEY environment variable not set!")
+    # Check if Gemini API key is set
+    if not os.getenv("GEMINI_API_KEY"):
+        print("ERROR: GEMINI_API_KEY environment variable not set!")
         print("Please set it in your .env file or environment.")
         sys.exit(1)
     

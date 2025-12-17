@@ -36,10 +36,10 @@ class Settings(BaseSettings):
     REDIS_DB: int = 0
     REDIS_URL: str = "redis://localhost:6379/0"
     
-    # OpenAI
-    OPENAI_API_KEY: str = ""
-    OPENAI_MODEL: str = "gpt-4-turbo-preview"
-    OPENAI_EMBEDDING_MODEL: str = "text-embedding-3-small"
+    # Google Gemini
+    GEMINI_API_KEY: str = ""
+    GEMINI_MODEL: str = "gemini-1.5-pro"
+    GEMINI_EMBEDDING_MODEL: str = "models/embedding-001"
     
     # External APIs
     CLINICAL_TRIALS_API_KEY: Optional[str] = None

@@ -6,7 +6,7 @@ import time
 from typing import Dict, Any, List
 from datetime import datetime
 import logging
-from langchain_openai import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.prompts import ChatPromptTemplate
 from langchain.output_parsers import PydanticOutputParser
 from pydantic import BaseModel, Field
@@ -45,12 +45,12 @@ class MasterAgent:
     def __init__(self):
         """Initialize Master Agent with LLM and worker agents"""
         self.llm = None
-        if settings.OPENAI_API_KEY:
+        if settings.GEMINI_API_KEY:
             try:
-                self.llm = ChatOpenAI(
-                    model=settings.OPENAI_MODEL,
+                self.llm = ChatGoogleGenerativeAI(
+                    model=settings.GEMINI_MODEL,
                     temperature=0.2,  # Low temperature for consistent decomposition
-                    api_key=settings.OPENAI_API_KEY
+                    google_api_key=settings.GEMINI_API_KEY
                 )
             except Exception:
                 self.llm = None  # Allow creation without LLM for testing

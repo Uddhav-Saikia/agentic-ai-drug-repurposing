@@ -4,7 +4,7 @@ Market Intelligence Agent - Specialized in market analysis and competitive intel
 import time
 from typing import List, Any
 from langchain.tools import Tool
-from langchain_openai import ChatOpenAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 
 from agents.base_agent import BaseAgent, AgentTask, AgentResult
 from agents.tools.market_tools import (
@@ -28,12 +28,12 @@ class MarketIntelligenceAgent(BaseAgent):
     
     def __init__(self, llm: Any = None):
         """Initialize Market Intelligence Agent"""
-        if llm is None and settings.OPENAI_API_KEY:
+        if llm is None and settings.GEMINI_API_KEY:
             try:
-                llm = ChatOpenAI(
-                    model=settings.OPENAI_MODEL,
-                    temperature=0.3,
-                    api_key=settings.OPENAI_API_KEY
+                llm = ChatGoogleGenerativeAI(
+                    model=settings.GEMINI_MODEL,
+                    temperature=0.7,
+                    google_api_key=settings.GEMINI_API_KEY
                 )
             except Exception:
                 llm = None  # Allow creation without LLM for testing
