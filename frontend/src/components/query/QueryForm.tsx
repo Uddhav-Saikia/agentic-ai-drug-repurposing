@@ -62,7 +62,7 @@ export function QueryForm() {
         <div>
           <label
             htmlFor="userId"
-            className="block text-sm font-medium text-gray-700 mb-2"
+            className="block text-sm font-medium text-gray-900 mb-2"
           >
             User ID (optional)
           </label>
@@ -71,7 +71,7 @@ export function QueryForm() {
             id="userId"
             value={userId}
             onChange={(e) => setUserId(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all text-gray-900 bg-white"
             placeholder="Enter your user ID"
           />
         </div>
@@ -89,7 +89,7 @@ export function QueryForm() {
             value={queryText}
             onChange={(e) => setQueryText(e.target.value)}
             rows={4}
-            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all resize-none"
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none transition-all resize-none text-gray-900 bg-white"
             placeholder="e.g., Find drug repurposing opportunities for Alzheimer's disease..."
             required
             minLength={10}
@@ -110,7 +110,7 @@ export function QueryForm() {
                 key={index}
                 type="button"
                 onClick={() => handleExampleClick(example)}
-                className="text-left text-sm p-3 bg-gray-50 hover:bg-primary-50 rounded-lg transition-colors border border-gray-200 hover:border-primary-300"
+                className="text-left text-sm p-3 bg-gray-50 hover:bg-primary-50 rounded-lg transition-colors border border-gray-200 hover:border-primary-300 text-gray-900"
               >
                 {example}
               </button>
