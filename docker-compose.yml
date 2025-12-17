@@ -1,0 +1,128 @@
+version: '3.8'
+
+services:
+  # PostgreSQL with pgvector extension
+  postgres:
+    image: ankane/pgvector:latest
+    container_name: drug_repurposing_db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+      POSTGRES_DB: drug_repurposing
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - drug_repurposing_network
+
+  # Redis for caching and task queue
+  redis:
+    image: redis:7-alpine
+    container_name: drug_repurposing_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - drug_repurposing_network
+
+  # FastAPI Backend
+  backend:
+    build:
+      context: ./backend
+      dockerfile: ../docker/Dockerfile.backend
+    container_name: drug_repurposing_backend
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres123@postgres:5432/drug_repurposing
+      - REDIS_URL=redis://redis:6379/0
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - ./logs:/app/logs
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    networks:
+      - drug_repurposing_network
+
+  # Celery Worker for background tasks
+  celery_worker:
+    build:
+      context: ./backend
+      dockerfile: ../docker/Dockerfile.backend
+    container_name: drug_repurposing_celery
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres123@postgres:5432/drug_repurposing
+      - REDIS_URL=redis://redis:6379/0
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - redis
+      - postgres
+    command: celery -A core.celery_app worker --loglevel=info
+    networks:
+      - drug_repurposing_network
+
+  # Flower for Celery monitoring
+  flower:
+    build:
+      context: ./backend
+      dockerfile: ../docker/Dockerfile.backend
+    container_name: drug_repurposing_flower
+    environment:
+      - REDIS_URL=redis://redis:6379/0
+    ports:
+      - "5555:5555"
+    depends_on:
+      - redis
+      - celery_worker
+    command: celery -A core.celery_app flower --port=5555
+    networks:
+      - drug_repurposing_network
+
+  # Next.js Frontend
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../docker/Dockerfile.frontend
+    container_name: drug_repurposing_frontend
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      - backend
+    command: npm run dev
+    networks:
+      - drug_repurposing_network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  drug_repurposing_network:
+    driver: bridge

@@ -1,0 +1,17 @@
+-r requirements.txt
+
+# Development Tools
+black==24.1.1
+flake8==7.0.0
+mypy==1.8.0
+isort==5.13.2
+pre-commit==3.6.0
+
+# Testing
+pytest-mock==3.12.0
+faker==22.2.0
+factory-boy==3.3.0
+
+# Documentation
+mkdocs==1.5.3
+mkdocs-material==9.5.6
